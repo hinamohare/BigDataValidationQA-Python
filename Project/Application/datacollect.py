@@ -1,3 +1,5 @@
+from bsddb import dbutils
+
 import SOAPpy
 import simplejson
 import json
@@ -21,24 +23,29 @@ class DataCollectionFromWebService:
         :return:
         """
         #construct filename in the format "region_station_startdate_enddate.json" with no spaces and "-"
+
         filename = region + "_" + station+ "_" + start_date + "_" + end_date + ".json"
         filename = filename.replace(" ","")
         filename = filename.replace("-","")
         print filename
         obj =  RegionData()
         stationcode = obj.getStaionCode(region, station)
+
+
         server = SOAPpy.SOAPProxy("http://cdmo.baruch.sc.edu/webservices2/requests.cfc?wsdl")
 
+        stationcode="pdbjewq"
         responsedata =  server.exportAllParamsDateRangeXMLNew(stationcode, start_date, end_date,'*')
        # print responsedata
         pythonObject = SOAPpy.Types.simplify(responsedata)
         #jsonObject = json.dumps(pythonObject)
         #assert type(jsonObject) == str
-        dataArray =  pythonObject["returnData"] # returns { data: [{...},{....},.....]}
+        dataArray =  pythonObject["returnData"]["data"] # returns {  [{...},{....},.....]}
         #print dataArray
 
-        self.self.dataToJson(dataArray, filename) # store the data into a json file
+        self.dataToJson(dataArray, filename) # store the data into a json file
         #store data into rawdata collection
+
         rawObj =RawData()
         rawObj.insertRawStationData(region,station,start_date,end_date,dataArray)
         return filename # return the json filename where data is stored
@@ -51,14 +58,13 @@ class DataCollectionFromWebService:
         """
         try:
             jsondata = simplejson.dumps(dataArray, indent=4, skipkeys=True, sort_keys=True)
-            fd = open("./data/"+filename, 'w')
+            fd = open("./data/" + filename, 'w')
             fd.write(jsondata)
             fd.close()
             print ("data written to the file succesfully")
         except:
             print 'ERROR writing', filename
         pass
-
 
 
 

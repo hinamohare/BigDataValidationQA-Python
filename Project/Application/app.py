@@ -19,6 +19,7 @@ def getRegionInformation():
     data = obj.getAllRegionInfo()
     return jsonify(result = dumps( data))
 
+
 #api to search the station record in the validated dataset
 @app.route('/search',methods = ['POST'])
 def getPrice():
