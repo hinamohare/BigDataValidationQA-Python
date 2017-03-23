@@ -114,11 +114,14 @@ class ValidatedData:
     def __init__(self):
         pass
 
-    def insertValidatedStationData(self, region, station, start_date, end_date, data, parameters):
+    def insertValidatedStationData(self, region, station, start_date, end_date,totalquality, data, parameters):
         """
         This function inserts the validated dataset into the database
-        { region: 'regionname' , station: 'stationname', from: 'startdate', to: 'enddate', type: "water quality", data: "data",
-        qualityParameters: {completeness: '', accuracy:'',timeliness:'',uniqueness:'',validity:'',consistency:'', reliability:'', usability:''}
+        { region: 'regionname' , station: 'stationname',
+         from: 'startdate', to: 'enddate',
+        type: "water quality", data: "data", TotalWaterQuality: "totalquality"
+        qualityParameters: {completeness: '', accuracy:'',timeliness:'',uniqueness:'',validity:'',consistency:'',
+         reliability:'', usability:''}
         }
         :param region:
         :param station:
@@ -130,7 +133,8 @@ class ValidatedData:
         db = client.qaplatformdb  # getting database
         collection = db.validateddata #getting validateddata collections
 
-        post_data = {'region':region, 'station': station, 'start_date':start_date, 'end_date':end_date,'qualityparameters':parameters,'data': data}
+        post_data = {'region':region, 'station': station, 'start_date':start_date,'end_date':end_date,
+                     'TotalWaterQuality':totalquality, 'qualityparameters':parameters,'data': data}
         result = collection.insert_one(post_data)
         print "inserted record id: "+result.inserted_id
         print 'inserted validated data into the database'
@@ -183,7 +187,8 @@ class ValidatedData:
         """
         This function searches the record of the station between start and end date into collection of validated dataset
         validatedcollection stores data in following format
-        { region: 'regionname' , station: 'stationname', from: 'startdate', to: 'enddate', type: "water quality", data: "data",
+        { region: 'regionname' , station: 'stationname', from: 'startdate', to: 'enddate', type: "water quality",
+        'TotalWaterQuality':totalquality, data: "data",
         qualityparameters: {completeness: '', accuracy:'',timeliness:'',uniqueness:'',validity:'',consistency:'', reliability:'', usability:''}
         }
         :param region:
@@ -218,9 +223,8 @@ class RawData:
     def insertRawStationData(self, region, station, start_date, end_date, data):
         """
         This function inserts the validated dataset into the database
-        { region: 'regionname' , station: 'stationname', from: 'startdate', to: 'enddate', type: "water quality", data: "data",
-        qualityParameters: {completeness: '', accuracy:'',timeliness:'',uniqueness:'',validity:'',consistency:'', reliability:'', usability:''}
-        }
+        { region: 'regionname' , station: 'stationname', from: 'startdate', to: 'enddate', data: "data",
+         }
         :param region:
         :param station:
         :param start_date:

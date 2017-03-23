@@ -22,7 +22,7 @@ def getRegionInformation():
 
 #api to search the station record in the validated dataset
 @app.route('/search',methods = ['POST'])
-def getPrice():
+def searchData():
     """
     searches the record for the station into database
     :return: if data is found into the database
@@ -66,6 +66,57 @@ def getPrice():
         print "data is not available in the validated database for this station"
         return jsonify(data={'found': "no"})
 
+#api to collect user input file
+@app.route('/getUserFile', methods=['POST'])
+def getUserDataFile():
+    input_json = request.get_json(force=True)
+
+    region = request.json["region"]  # region name
+    print "region: " + region
+
+    station = request.json["station"]  # station name
+    print "station: " + station
+
+    start_date = request.json["from"]  # start_date name
+    print "from: " + start_date
+
+    end_date = request.json["to"]  # end_date name
+    print "to: " + end_date
+    #code for uploading file
+
+
+#api to collect user input filters to collect data from webservice
+@app.route('/getDataFromWebService', methods=['POST'])
+def getDataFromAPI():
+    input_json = request.get_json(force=True)
+
+    region = request.json["region"]  # region name
+    print "region: " + region
+
+    station = request.json["station"]  # station name
+    print "station: " + station
+
+    start_date = request.json["from"]  # start_date name
+    print "from: " + start_date
+
+    end_date = request.json["to"]  # end_date name
+    print "to: " + end_date
+    #code for downloading data
+
+
+
+#api to calculate the quality parameters
+@app.route('/calculateWQ',methods = ['POST'])
+def getWaterQuality():
+    """
+    this api collects the user input and then process the data to calculate the quality paramaters
+    :return: result = {"region": regionname , "station": stationname,
+         "from": startdate, "to": enddate, "TotalWaterQuality": totalquality,
+        "qualityParameters": {"completeness": cp, "accuracy": a, "timeliness": t, "uniqueness": un, "validity" : v, "consistency": c,
+         reliability: r, "usability"": us} }
+    """
+    result = {}
+    return jsonify(data = result)
 
 
 if __name__ == "__main__" :

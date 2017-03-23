@@ -10,7 +10,7 @@ class DataCollectionFromWebService:
     """
     This class contains methods to collect data from the SOAP webservice, store the data into a json file, store the data to rawdata collection
     """
-
+    filename =''
     def __init__(self):
         pass
 

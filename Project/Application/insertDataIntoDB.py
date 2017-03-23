@@ -1,8 +1,8 @@
 from pymongo import MongoClient
-
+import json
 from model import RegionData
 import SOAPpy
-"""
+
 data = {'region':"Padilla Bay, WA", 'stations':[
                     {'station':"Bayview Channel", 'code': "pdbbywq", 'lat':"48.496139",'lng':"122.502114"},
                     {'station':"Ploeg Channel", 'code': "pdbbpwq", 'lat':"48.556322",'lng':"122.530894"},
@@ -19,9 +19,7 @@ pythonObject = SOAPpy.Types.simplify(responsedata)
 dataArray =  pythonObject["returnData"]["data"]
 print dataArray
 
-"""
-import json
-from pprint import pprint
+""" code to import data from file to mongodb
 
 with open('ElkhornSlough,CA_SouthMarch_20141230_20141231.json') as data_file:
     data = json.load(data_file)
@@ -30,3 +28,4 @@ db = client.test  # getting database
 collection = db.test #getting validateddata collection
 db.test.insert(data)
 print db.test.find().pretty()
+"""
